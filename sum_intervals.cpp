@@ -1,15 +1,15 @@
 #include <vector>
 #include <utility>
 #include <string>
+using namespace std;
 int sum_intervals(std::vector<std::pair<int, int>> intervals) {
     for (int i = 0; i < intervals.size(); i++) {
-        if (intervals.size() < i || intervals.size() == 1) {
+        if (intervals.size() < i) {
             break;
         }
         for (int j = 0; j < intervals.size(); j++) {
             if (intervals.size() == 1) {
-                break;
-                //return intervals[0].second - intervals[0].first;
+                return intervals[0].second - intervals[0].first;
             }
             if (j == i) {
                 continue;
@@ -32,14 +32,26 @@ int sum_intervals(std::vector<std::pair<int, int>> intervals) {
                     indexForDelete = i;
                 }
                 intervals.erase(intervals.begin() + indexForDelete);
-                j--;
+                if (indexForDelete == j) {
+                    j--;
+                }
+                else
+                {
+                    i--;
+                    break;
+                }
 
             }
         }
     }
     int result = 0;
     for (int i = 0; i < intervals.size(); i++) {
-        result += intervals[i].second - intervals[i].first;
+        if (intervals[i].first < 0 && intervals[i].second > 0) {
+            result += intervals[i].second + (intervals[i].first * -1);
+        }
+        else{
+            result += intervals[i].second - intervals[i].first;
+        }
     }
     return result;
 }
